@@ -13,7 +13,7 @@ class cv(object):
 
         self.read_file('dantzig42.tsp')
         self.calc_euc(self.node)
-        self.total = self.tot_distance()
+        self.tot_distance()
 
     def read_file(self, name):
         file = open('Places/' + name)
@@ -44,16 +44,18 @@ class cv(object):
         node = []
         for i in range(self.Dimension):
             node.append(i)
-        random.shuffle(node)
+        for i in range(random.randint(random.randint(2, 5), len(node))):
+            t1 = random.randint(0, len(node) - 1)
+            n1 = node[i]
+            node[i] = node[t1]
+            node[t1] = n1
         return node
 
     def tot_distance(self):
-        total = 0
+        self.total = 0
         if self.path == None:
             self.path = self.create_random()
         for i in range(len(self.node)-1):
             #print(self.path[i], self.path[i + 1])
-            total += self.adj_matrix[self.path[i]-1][self.path[i + 1]-1]
-        total += self.adj_matrix[self.path[1]][self.path[0]]
-
-        return total
+            self.total += self.adj_matrix[self.path[i]-1][self.path[i + 1]-1]
+        self.total += self.adj_matrix[self.path[1]][self.path[0]]
